@@ -1,12 +1,13 @@
 // src/app.js
 import express from 'express';
-import {initDatabase,User} from './models/UserModel.js';  // Importar para inicializar la base de datos
-import app from './api/routes/usersRoutes.js'
-
+import {initDatabase} from './models/UserModel.js';  
+import app  from './api/routes/usersRoutes.js'; 
+import  getUserPort  from './api/routes/getUsersRoutes.js';
 
 const route = express();
 route.use(express.json());
 route.use('/api/',app)
+route.use('/api/',getUserPort)
 // Configuraciones y middleware de Express aquí
 
 initDatabase().then(() => {

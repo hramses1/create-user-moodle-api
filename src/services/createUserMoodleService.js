@@ -1,16 +1,32 @@
 import MoodleService from '../utils/https.js';
 import UserRegistration from '../dtos/createUser.dto.js';
+import UserSearch from '../dtos/getUser.dto.js';
+import getUser from './getUserMoodleService';
 
 const moodleService = new MoodleService();
 
 export default function createUser(req, res) {
     try {
+
         // Crea una nueva instancia de UserRegistration, asegurándote de que los datos son válidos
         const newUser = new UserRegistration(req.body);
         newUser.validate();  // Suponiendo que hay una función de validación
 
         moodleService.core_user_create_users([newUser])
             .then(response => {
+
+                const verified = {
+                    key: 'username',
+                    value: newUser.username
+                }
+
+                const verifiedUsers = new UserSearch(verified);
+                verifiedUsers.validate();
+
+                const getUsers = getUser(verifiedUsers)
+
+
+                console.log(verified);
 
                 if (response.message == 'Detectado valor de parámetro no válido' )
                     res.status(500).json({ message: "El usuario ya esta creado", error: error.toString() });

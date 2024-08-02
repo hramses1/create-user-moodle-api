@@ -35,4 +35,26 @@ export default class MoodleService {
                 throw error;
             });
     }
+
+    core_user_get_users(user){
+
+        if (!this.token || !this.url) {
+            console.error("Moodle API token or URL is not defined. Check your .env file.");
+            throw new Error("Moodle API token or URL is not defined.");
+        }
+
+        const params = {
+            wstoken: this.token,
+            wsfunction: 'core_user_get_users',
+            moodlewsrestformat: 'json',
+            criteria: user
+        };
+
+        return axios.post(this.url, qs.stringify(params, { arrayFormat: 'indices' }), this.options)
+            .then(response => response.data.users)
+            .catch(error => {
+                throw error;
+            });
+    }
+
 }
