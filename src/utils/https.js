@@ -56,5 +56,23 @@ export default class MoodleService {
                 throw error;
             });
     }
+    enrol_manual_enrol_users(enrolments) {
+        if (!this.token || !this.url) {
+            console.error("Moodle API token or URL is not defined. Check your .env file.");
+            throw new Error("Moodle API token or URL is not defined.");
+        }
 
+        const params = {
+            wstoken: this.token,
+            wsfunction: 'enrol_manual_enrol_users',
+            moodlewsrestformat: 'json',
+            enrolments: enrolments
+        };
+
+        return axios.post(this.url, qs.stringify(params, { arrayFormat: 'indices' }), this.options)
+            .then(response => response.data)
+            .catch(error => {
+                throw error;
+            });
+    }
 }
