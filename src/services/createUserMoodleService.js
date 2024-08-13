@@ -1,56 +1,28 @@
 import MoodleService from '../utils/https.js';
-import UserSearch from '../dtos/getUser.dto.js';
 import UserRegistration from '../dtos/createUser.dto.js';
 
 const moodleService = new MoodleService();
 
-export default function getUsers(req, res) {
+export default function createUser(req, res) {
     try {
+        // Asegura que los datos de entrada son válidos antes de proceder
         const newUser = new UserRegistration(req.body);
-        newUser.validate();
+        newUser.validate(); // Asumiendo que `validate()` lanza un error si hay algún problema
 
-        const verified = {
-            key: "username",
-            value: newUser.username
-        };
-        const userSearch = new UserSearch(verified);
-        userSearch.validate();
-
-        moodleService.core_user_get_users([userSearch])
+        // Realiza la petición al servicio de Moodle
+        moodleService.core_user_create_users([newUser])
             .then(response => {
-                if (response.length === 0) {
-                    console.log('Usuario no encontrado, creando nuevo usuario.');
-                    return Promise.all([
-                        Promise.resolve([]), // Array vacío indicando que no se encontró el usuario
-                        moodleService.core_user_create_users([newUser])
-                    ]);
-                } else {
-                    console.log('Usuario encontrado.');
-                    return Promise.resolve([response, null]); // No crear un nuevo usuario
-                }
-            })
-            .then(([getUsersResponse, createResponse]) => {
-                if (createResponse) {
-                    res.status(200).json({
-                        message: "Usuario creado exitosamente",
-                        createResponse,
-                        getUsersResponse
-                    });
-                } else {
-                    res.status(200).json({
-                        message: "Usuario encontrado exitosamente",
-                        getUsersResponse
-                    });
-                }
+                // Solo envía la respuesta si no se ha enviado una respuesta anteriormente
+                    res.status(200).json({ message: "Usuario Creado", data: response});
             })
             .catch(error => {
-                // Manejo de errores de la promesa
-                if (!res.headersSent) {
-                    res.status(500).json({ message: "Error al buscar o crear el usuario", error: error.toString() });
-                }
+                // Maneja errores que pueden ocurrir durante la llamada al API
+                console.error("Error al crear usuario en Moodle:", error);
+                    res.status(500).json({ message: "Error al crear el usuario", error: error.toString() });
             });
     } catch (error) {
-        // Captura errores en la creación del DTO o en la validación
+        // Maneja errores específicos de la validación o creación del DTO
+        console.error("Error en los datos de entrada:", error);
         if (!res.headersSent) {
             res.status(400).json({ message: "Error en los datos de entrada", error: error.message });
         }

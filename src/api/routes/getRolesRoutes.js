@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import getUser from '../../services/getUserMoodleService.js';
+import getRoles from '../../services/getRolesMoodleService.js';
 
-const getUserPort = Router();
+const getRolesPort = Router();
 
-getUserPort.post('/get', async (req, res) => {
+getRolesPort.post('/roles', async (req, res) => {
     try {
-        const result = await getUser(req);
+        const result = await getRoles(req);
         res.status(200).json({ success: true, data: result });
     } catch (error) {
         console.error('Error:', error);
@@ -15,4 +15,4 @@ getUserPort.post('/get', async (req, res) => {
     }
 });
 
-export default getUserPort;
+export default getRolesPort;

@@ -75,4 +75,44 @@ export default class MoodleService {
                 throw error;
             });
     }
+
+    core_course_get_courses_by_field(shortname) {
+        if (!this.token || !this.url) {
+            console.error("Moodle API token or URL is not defined. Check your .env file.");
+            throw new Error("Moodle API token or URL is not defined.");
+        }
+
+        const params = {
+            wstoken: this.token,
+            wsfunction: 'core_course_get_courses_by_field',
+            moodlewsrestformat: 'json',
+            field: 'shortname',
+            value: shortname
+        };
+
+        return axios.post(this.url, qs.stringify(params, { arrayFormat: 'indices' }), this.options)
+            .then(response => response.data)
+            .catch(error => {
+                throw error;
+            });
+    }
+
+    local_wsgetroles_get_roles() {
+        if (!this.token || !this.url) {
+            console.error("Moodle API token or URL is not defined. Check your .env file.");
+            throw new Error("Moodle API token or URL is not defined.");
+        }
+
+        const params = {
+            wstoken: this.token,
+            wsfunction: 'local_wsgetroles_get_roles',
+            moodlewsrestformat: 'json',
+        };
+
+        return axios.post(this.url, qs.stringify(params, { arrayFormat: 'indices' }), this.options)
+            .then(response => response.data)
+            .catch(error => {
+                throw error;
+            });
+    }
 }
