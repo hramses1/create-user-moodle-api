@@ -2,7 +2,7 @@ import MoodleService from '../utils/https.js';
 
 const moodleService = new MoodleService();
 
-export default async function getRoles(req, res) {
+export default async function getRoles() {
     try {
         const roles  = await moodleService.local_wsgetroles_get_roles()
         return roles

@@ -47,7 +47,11 @@ export default class MoodleService {
             wstoken: this.token,
             wsfunction: 'core_user_get_users',
             moodlewsrestformat: 'json',
-            criteria: user
+            criteria:[{
+                key : 'username',
+                value : user 
+            }
+            ]
         };
 
         return axios.post(this.url, qs.stringify(params, { arrayFormat: 'indices' }), this.options)

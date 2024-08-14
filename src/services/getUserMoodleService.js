@@ -1,10 +1,9 @@
 import MoodleService from '../utils/https.js';
-import UserSearch from '../dtos/getUser.dto.js';
+
 
 const moodleService = new MoodleService();
 
 export default async function getUser(req, res) {
-        const getUsers = new UserSearch(req.body);
-        const response = await moodleService.core_user_get_users([getUsers])
+        const response = await moodleService.core_user_get_users(req)
         return response
     }

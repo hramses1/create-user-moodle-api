@@ -18,26 +18,15 @@ export default async function createUsers(req, res) {
 
     if (existingUsers.length === 0) {
       console.log("Usuario no encontrado, creando nuevo usuario.")
-      const createResponse = await createUser(req);
+      await createUser(req)
+      return 'Usuario no encontrado, creando nuevo usuario.'
+    }else{
 
-      res.status(200).json({
-        message: "Usuario creado exitosamente",
-        createResponse,
-      });
-    } else {
-      console.log("Usuario encontrado.");
-      res.status(200).json({
-        message: "Usuario encontrado exitosamente",
-        getUsersResponse: existingUsers,
-      });
+      console.log("El usuario ya se encuentra registrado")
+      return 'El usuario ya se encuentra registrado'
+
     }
   } catch (error) {
     console.error("Error en la operación:", error);
-    if (!res.headersSent) {
-      res.status(400).json({
-        message: "Error en los datos de entrada",
-        error: error.message,
-      });
-    }
   }
 }
