@@ -1,6 +1,7 @@
 import getRoles from "../services/getRolesMoodleService.js";
 import getenrols from "../services/getEnrolMoodleService.js";
 import getUser from "../services/getUserMoodleService.js";
+import createUsers from '../../controllers/usersController.js';
 
 export default async function enrolUser(req, res) {
   try {
@@ -33,7 +34,7 @@ export default async function enrolUser(req, res) {
           const result = await getRoles();
           courseid = enrolmentResults.courses[0].id;
 
-          result.forEach((result) => {
+          result.filter(result=> {
             if (result.shortname === enrollment.shortname_role) {
               roleid = result.id;
             }
