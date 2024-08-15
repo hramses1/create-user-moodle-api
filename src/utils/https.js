@@ -119,4 +119,68 @@ export default class MoodleService {
                 throw error;
             });
     }
+
+    core_group_add_group_members(members) {
+        if (!this.token || !this.url) {
+            console.error("Moodle API token or URL is not defined. Check your .env file.");
+            throw new Error("Moodle API token or URL is not defined.");
+        }
+
+        const params = {
+            wstoken: this.token,
+            wsfunction: 'core_group_add_group_members',
+            moodlewsrestformat: 'json',
+            members: members
+        };
+
+        return axios.post(this.url, qs.stringify(params, { arrayFormat: 'indices' }), this.options)
+            .then(response => response.data)
+            .catch(error => {
+                throw error;
+            });
+    }
+
+    core_group_create_groups(members) {
+        if (!this.token || !this.url) {
+            console.error("Moodle API token or URL is not defined. Check your .env file.");
+            throw new Error("Moodle API token or URL is not defined.");
+        }
+
+        const params = {
+            wstoken: this.token,
+            wsfunction: 'core_group_create_groups',
+            moodlewsrestformat: 'json',
+            members: members
+        };
+
+        return axios.post(this.url, qs.stringify(params, { arrayFormat: 'indices' }), this.options)
+            .then(response => response.data)
+            .catch(error => {
+                throw error;
+            });
+    }
+
+    core_group_get_course_groups(courseId) {
+        if (!this.token || !this.url) {
+            console.error("Moodle API token or URL is not defined. Check your .env file.");
+            throw new Error("Moodle API token or URL is not defined.");
+        }
+
+        const params = {
+            wstoken: this.token,
+            wsfunction: 'core_group_get_course_groups',
+            moodlewsrestformat: 'json',
+            courseid: courseId
+        };
+
+        return axios.post(this.url, qs.stringify(params, { arrayFormat: 'indices' }), this.options)
+            .then(response => response.data)
+            .catch(error => {
+                throw error;
+            });
+    }
+
+
+
+
 }
