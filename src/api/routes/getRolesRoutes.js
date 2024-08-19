@@ -3,18 +3,13 @@ import getRoles from '../../services/getRolesMoodleService.js';
 import getenrols from '../../services/getEnrolMoodleService.js'
 import getUser from '../../services/getUserMoodleService.js'
 
-import enrolUser from '../../controllers/enrolController.js'
+import enrolUsers from '../../controllers/enrolController.js'
 const getRolesPort = Router();
 
 getRolesPort.post('/roles', async (req, res) => {
     try {
-
-        const resultenrol = await enrolUser(req)
-
+        const resultenrol = await enrolUsers(req)
         res.status(200).json({ success: true, data: resultenrol});
-
-
-
     } catch (error) {
         console.error('Error:', error);
         if (!res.headersSent) {

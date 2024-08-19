@@ -1,11 +1,11 @@
 import { Router } from 'express';
 import getUser from '../../services/getUserMoodleService.js';
-
+import unenrolUser from '../../services/unenrolUserMoodleService.js';
 const getUserPort = Router();
 
 getUserPort.post('/get', async (req, res) => {
     try {
-        const result = await getUser(req);
+        const result = await unenrolUser(req);
         res.status(200).json({ success: true, data: result });
     } catch (error) {
         console.error('Error:', error);
