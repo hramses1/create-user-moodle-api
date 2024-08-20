@@ -9,6 +9,7 @@ export default async function UpdateUser(req) {
         const users = await getUser(req.username);
         const resultUser = users[0];
         const userid = resultUser.id;
+        await moodleService.activateUser(userid)
         req = {
             ...req,
             id: userid,
@@ -28,7 +29,6 @@ export default async function UpdateUser(req) {
         await moodleService.core_user_update_users([newUserUpdate]);
 
         let user = await User.findOne({ where: { username: req.username } });
-        console.log('posible error:',user);
         await user.update(req = {
             ...req,
             state: req.state,

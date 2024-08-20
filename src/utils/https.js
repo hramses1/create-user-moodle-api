@@ -77,6 +77,32 @@ export default class MoodleService {
     return await this.callMoodleAPI(params);
   }
 
+  async suspendUser(userId) {
+    const params = {
+      wstoken: this.token,
+      wsfunction: "core_user_update_users",
+      moodlewsrestformat: "json",
+      users: [{
+        id: userId,
+        suspended: 1  // Establecer el estado de suspensión a '1' para suspender al usuario
+    }],
+    };
+    return await this.callMoodleAPI(params);
+  }
+
+  async activateUser(userId) {
+    const params = {
+      wstoken: this.token,
+      wsfunction: "core_user_update_users",
+      moodlewsrestformat: "json",
+      users: [{
+        id: userId,
+        suspended: 0  // Establecer el estado de activacion a '0' para suspender al usuario
+    }],
+    };
+    return await this.callMoodleAPI(params);
+  }
+
   async core_course_get_courses_by_field(shortname) {
     const params = {
       wstoken: this.token,
@@ -107,16 +133,12 @@ export default class MoodleService {
     return await this.callMoodleAPI(params);
   }
 
-  async core_group_delete_group_members(groupId, userId) {
-    if (!groupId || !userId) {
-      throw new Error("GroupId and UserId must be provided and valid.");
-    }
+  async core_group_delete_group_members(members) {
     const params = {
-      wstoken: this.token,
+      wstoken: this.token, 
       wsfunction: "core_group_delete_group_members",
       moodlewsrestformat: "json",
-      groupid: parseInt(groupId),
-      userids: parseInt(userId)
+      members:members
     };
     return await this.callMoodleAPI(params);
   }

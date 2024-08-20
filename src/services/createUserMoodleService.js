@@ -46,11 +46,11 @@ export default async function createUser(req) {
         if (!user) {
             // Si el usuario no existe, crearlo localmente
             user = await User.create(localUserDto);
-            console.log("Nuevo usuario creado:", { username: req.username, password: securePassword });
+            console.log("Nuevo usuario creado en Base:", { username: req.username, password: securePassword });
         } else {
             // Si el usuario ya existe, actualizarlo con la nueva información
             await user.update(localUserDto);
-            console.log("Usuario existente actualizado.",{ username: req.username, password: securePassword });
+            console.log("Usuario existente actualizado en base.",{ username: req.username, password: securePassword });
         }
         
         return { username: req.username, password: securePassword };

@@ -1,4 +1,4 @@
-export default class addGroup {
+export default class Group {
     constructor(data) {
         this.groupid = data.groupid;
         this.userid = data.userid;
