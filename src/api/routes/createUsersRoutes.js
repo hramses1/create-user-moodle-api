@@ -1,9 +1,9 @@
 import { Router } from 'express';
 
 import enrolUsers from '../../controllers/enrolController.js'
-const getRolesPort = Router();
+const createUserMoodle = Router();
 
-getRolesPort.post('/roles', async (req, res) => {
+createUserMoodle.post('/create', async (req, res) => {
     try {
         const resultenrol = await enrolUsers(req)
         res.status(200).json({ success: true, data: resultenrol});
@@ -15,4 +15,4 @@ getRolesPort.post('/roles', async (req, res) => {
     }
 });
 
-export default getRolesPort;
+export default createUserMoodle;

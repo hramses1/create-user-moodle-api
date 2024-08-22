@@ -56,15 +56,3 @@ export const User = sequelize.define('User', {
     type: DataTypes.DATE,
   },
 });
-
-export async function initDatabase() {
-  try {
-    await sequelize.authenticate();
-    console.log('Connection has been established successfully.');
-
-    await sequelize.sync({ force: false }); // No borra la tabla si ya existe
-    console.log('Database synchronized.');
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
-  }
-};
