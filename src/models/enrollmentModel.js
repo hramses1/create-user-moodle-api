@@ -1,9 +1,9 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/sequelize-config.js";
 // Suponiendo que tengas modelos de Course y Role
-import { Course } from "./CourseModel.js";  
-import { Role } from "./RoleModel.js";
 import { User } from './UserModel.js';
+import { Course } from './courseModel.js';
+import { Role } from './roleModel.js';
 
 export const Enrollment = sequelize.define(
   "Enrollment",

@@ -19,16 +19,16 @@ export default async function enrolUsers(req, res) {
       return res.status(400).json({ message: "Username is required in the teaching object." });
     }
 
-    let user = await manageUser(teaching);
-    console.log("User processed, ID:", user[0].id);
-
+    let user = await manageUser(req);
+    console.log("User processed, ID:", user.id);
+    
     if (!req.body.enrollments || req.body.enrollments.length === 0) {
       console.log("No enrollments provided.");
       return res.json({ message: "No courses to enroll. User updated successfully." });
     }
 
     for (const enrollment of req.body.enrollments) {
-      await processEnrollment(user[0].id, enrollment, teaching.lang);
+      await processEnrollment(user.id, enrollment, teaching.lang);
     }
 
     return { message: "Enrollment process completed successfully." };
@@ -39,15 +39,15 @@ export default async function enrolUsers(req, res) {
 }
 
 async function manageUser(teaching) {
-  let user = await getUser(teaching.username);
+  let user = await getUser(teaching.body.teaching.username);
   if (!user) {
     console.log("User not found, creating new user.");
     user = await createUser(teaching);
   } else {
     console.log("Updating existing user.");
-    user = await updateUser(teaching);
+    user = await updateUser(teaching.body.teaching);
   }
-  return await getUser(teaching.username);
+  return await getUser(teaching.body.teaching.username);
 }
 
 async function processEnrollment(userId, enrollment, lang) {

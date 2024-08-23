@@ -7,7 +7,7 @@ const moodleService = new MoodleService();
 export default async function UpdateUser(req) {
     try {
         const users = await getUser(req.username);
-        const resultUser = users[0];
+        const resultUser = users;
         const userid = resultUser.id;
         await moodleService.activateUser(userid)
         req = {

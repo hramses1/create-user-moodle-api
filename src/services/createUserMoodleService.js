@@ -3,9 +3,11 @@ import UserRegistration from '../dtos/createUser.dto.js';
 import {v4 as uuidv4} from 'uuid';
 import { User } from '../models/UserModel.js';
 import crypto from 'crypto'
+import { Enrollment } from '../models/enrollmentModel.js';
+import { Role } from '../models/roleModel.js';
+import { Course } from '../models/courseModel.js';
 
 const moodleService = new MoodleService();
-
 
 function generateSecurePassword(length = 8) {
     return crypto.randomBytes(length)
@@ -15,47 +17,67 @@ function generateSecurePassword(length = 8) {
 
 export default async function createUser(req) {
     try {
-        // Genera una contraseña segura y un UUID
         const securePassword = generateSecurePassword(12);
         let myuuid = uuidv4();
 
-        // Crea un objeto con los datos del usuario
+
+        console.log(req.body.teaching.username);
+
         const userDto = {
-            username: req.username,
+            username: req.body.teaching.username,
             password: securePassword,
-            firstname: req.firstname,
-            lastname: req.lastname,
-            email: req.email,
-            city: req.city,
-            country: req.country,
-            lang: req.lang,
-            timezone: req.timezone,
-            idnumber: myuuid
+            firstname: req.body.teaching.firstname,
+            lastname: req.body.teaching.lastname,
+            email: req.body.teaching.email,
+            city: req.body.teaching.city,
+            country: req.body.teaching.country,
+            lang: req.body.teaching.lang,
+            timezone: req.body.teaching.timezone,
+            idnumber: myuuid,
+            state: req.body.teaching.state
         };
 
-        // Intentar crear el usuario en Moodle
         const newUserRegistration = new UserRegistration(userDto);
         newUserRegistration.validate();
         await moodleService.core_user_create_users([newUserRegistration]);
 
-        // Buscar si el usuario existe localmente
-        let user = await User.findOne({ where: { username: req.username } });
-        
-        const localUserDto = { ...userDto, state: req.state };
+        let user = await User.findOrCreate({
+            where: { username: userDto.username },
+            defaults: userDto
+        });
 
-        if (!user) {
-            // Si el usuario no existe, crearlo localmente
-            user = await User.create(localUserDto);
-            console.log("Nuevo usuario creado en Base:", { username: req.username, password: securePassword });
-        } else {
-            // Si el usuario ya existe, actualizarlo con la nueva información
-            await user.update(localUserDto);
-            console.log("Usuario existente actualizado en base.",{ username: req.username, password: securePassword });
+        if (!user[1]) { // Si el usuario ya existía, actualizarlo
+            await user[0].update(userDto);
         }
-        
-        return { username: req.username, password: securePassword };
 
+        console.log("User processed:", { username: req.body.teaching.username, password: securePassword });
+
+        // Procesar cada inscripción si hay enrollments
+
+        console.log(req.body.enrollments.length);
+        if (req.body.enrollments && req.body.enrollments.length > 0) {
+            for (const enrollments of req.body.enrollments) {
+
+                await Course.findOrCreate({ where: { shortname: enrollments.shortname_course } });
+                await Role.findOrCreate({ where: { shortname: enrollments.shortname_role } });
+
+                const course = await Course.findOne({ where: { shortname: enrollments.shortname_course } });
+                const role = await Role.findOne({ where: { shortname: enrollments.shortname_role } });
+                if (course && role) {
+                    await Enrollment.findOrCreate({ where:{
+                        userId: user[0].id,
+                        courseId: course.id,
+                        roleId: role.id,
+                        program: enrollments.program
+                    }});
+                    console.log(`Enrollment created for user: ${user[0].id} in course: ${course.id} with role: ${role.id}`);
+                }
+            }
+        }
+
+        return { username: req.body.teaching.username, password: securePassword };
     } catch (error) {
-        console.error("Error en los datos de entrada en Create:", error);
+        console.error("Error in createUser:", error);
+        throw error;  // Re-throw para manejar más arriba si es necesario
     }
 }

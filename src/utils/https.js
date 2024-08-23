@@ -50,9 +50,11 @@ export default class MoodleService {
   async core_user_get_users(user) {
     const params = {
       wstoken: this.token,
-      wsfunction: "core_user_get_users",
+      wsfunction: "core_user_get_users_by_field",
       moodlewsrestformat: "json",
-      criteria: [{ key: "username", value: user }],
+      field : "username",
+      "values[0]": user
+      //criteria: [{ key: "username", value: user }],
     };
     return await this.callMoodleAPI(params);
   }

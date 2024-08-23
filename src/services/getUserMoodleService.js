@@ -6,12 +6,11 @@ export default async function getUser(req, res) {
     try {
         if (!req) {
         }
-        const response = await moodleService.core_user_get_users(req);
-
-        if (response && response.users && response.users.length > 0) {
-            return response.users
+        const response = (await moodleService.core_user_get_users(req));
+        if (response) {
+            return response[0]
         } else {
-            console.log('No users found');
+            console.log('No users found (getUsers)');
         }
     } catch (error) {
         console.error('Error fetching users:', error.message);

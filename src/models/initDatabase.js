@@ -2,10 +2,10 @@ import { DataTypes } from 'sequelize';
 import sequelize from '../config/sequelize-config.js';
 // Asegúrate de importar todos los modelos
 import { Organization } from './organizationModel.js'; // Ejemplo de otro modelo
-import { Role } from './RoleModel.js';
-import { Course } from './CourseModel.js';
-import { Enrollment } from './EnrollmentModel.js';
 import { User } from './UserModel.js';
+import { Role } from './roleModel.js';
+import { Enrollment } from './enrollmentModel.js';
+import { Course } from './courseModel.js';
 
 
 
