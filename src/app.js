@@ -1,10 +1,10 @@
 import express from 'express';
 import createUserMoodle from './api/routes/createUsersRoutes.js';
-import getUser from './api/routes/getUsersRoutes.js';
 import enrolPort from './api/routes/enrolRoutes.js';
 import getRolesPort from './api/routes/getRolesRoutes.js';
 import helmet from 'helmet';
 import compression from 'compression';
+import desactivateUserPort from './api/routes/desactivateUserRoutes.js';
 
 import {initDatabase} from './models/initDatabase.js';  
 
@@ -17,7 +17,7 @@ app.use(express.json()); // Parseo de JSON
 
 // Rutas
 app.use('/api/', createUserMoodle);
-app.use('/api/', getUser);
+app.use('/api/', desactivateUserPort);
 app.use('/api/', enrolPort);
 app.use('/api/', getRolesPort);
 

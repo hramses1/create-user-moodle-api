@@ -1,4 +1,4 @@
-export default class UserRegistration {
+export default class UserRegistrationDB {
     constructor(data) {
 
         this.username = data.username
@@ -7,11 +7,11 @@ export default class UserRegistration {
         this.lastname = data.lastname
         this.email = data.email;
         this.city = data.city || 'Barcelona';
-        this.auth = data.auth || 'manual';
         this.country = data.country || 'España';
         this.lang = data.lang || 'es'; // Establece el idioma por defecto si no se proporciona
         this.timezone = data.timezone || 'UTC'; // Establece la zona horaria por defecto si no se proporciona
         this.idnumber = data.idnumber|| '';
+        this.state = data.state || true;
     }
 
     validate() {

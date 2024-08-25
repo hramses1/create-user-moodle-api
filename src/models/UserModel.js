@@ -14,6 +14,10 @@ export const User = sequelize.define('User', {
     allowNull: false,
     unique: true,
   },
+  idnumber: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   state: {
     type: DataTypes.BOOLEAN,
     allowNull: false,

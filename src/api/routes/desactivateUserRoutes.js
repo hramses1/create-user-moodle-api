@@ -1,9 +1,8 @@
 import { Router } from 'express';
-import getUser from '../../services/getUserMoodleService.js';
 import unenrolUser from '../../services/unenrolUserMoodleService.js';
-const getUserPort = Router();
+const desactivateUserPort = Router();
 
-getUserPort.post('/get', async (req, res) => {
+desactivateUserPort.post('/desactivate', async (req, res) => {
     try {
         const result = await unenrolUser(req);
         res.status(200).json({ success: true, data: result });
@@ -15,4 +14,4 @@ getUserPort.post('/get', async (req, res) => {
     }
 });
 
-export default getUserPort;
+export default desactivateUserPort;

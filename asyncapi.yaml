@@ -1,20 +1,108 @@
 openapi: 3.0.0
 info:
-  title: "API"
+  title: API de Gestión de Usuarios de Moodle
   version: "1.0.0"
+  description: Esta API maneja la creación, actualización y obtención de usuarios de Moodle.
   contact:
-    name: Contact Name
-    email: contact@example.com
-    url: https://example.com/
+    name: Hector Arismendi
+    email: hector.arismendi@funiber.org
 tags:
-  - name: Metadata
-    description: Metadata related requests
+  - name: Users
+    description: Operaciones sobre usuarios
 paths:
-  /create:
-    get:
-      operationId: getMetadata
-      summary: Crear usuario en el Moodle FI
-      tags: [ 'Metadata' ]
+  /users/create:
+    post:
+      operationId: createUser
+      summary: Crear un nuevo usuario en Moodle con sus respectivas matriculaciones
+      tags: [ 'Users' ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - teaching
+                - enrollments
+              properties:
+                teaching:
+                  type: object
+                  required:
+                    - username
+                    - firstname
+                    - lastname
+                    - email
+                    - lang
+                    - city
+                    - country
+                    - state
+                  properties:
+                    username:
+                      type: string
+                      maxLength: 255
+                    firstname:
+                      type: string
+                      maxLength: 255
+                    lastname:
+                      type: string
+                      maxLength: 255
+                    email:
+                      type: string
+                      format: email
+                    lang:
+                      type: string
+                      maxLength: 10
+                    city:
+                      type: string
+                      maxLength: 255
+                    country:
+                      type: string
+                      maxLength: 2
+                    state:
+                      type: boolean
+                enrollments:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - shortname_course
+                      - shortname_role
+                      - program
+                    properties:
+                      shortname_course:
+                        type: string
+                        maxLength: 100
+                      shortname_role:
+                        type: string
+                        maxLength: 100
+                      program:
+                        type: string
+                        maxLength: 100
+                  maxItems: 100
       responses:
         '200':
-          description: OK
+          description: Usuario y sus matriculaciones creados exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: 'Success'
+                  message:
+                    type: string
+                    example: 'Usuario y matriculaciones creados exitosamente.'
+        '400':
+          description: Error en la solicitud
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: 'Error'
+                  message:
+                    type: string
+                    example: 'Datos de entrada inválidos.'

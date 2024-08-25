@@ -1,4 +1,4 @@
-import MoodleService from '../utils/https.js';
+import MoodleService from '../utils/MoodleIntegrationService.js';
 
 const moodleService = new MoodleService();
 

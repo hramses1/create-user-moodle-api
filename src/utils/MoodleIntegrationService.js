@@ -1,15 +1,11 @@
 import axios from "axios";
 import qs from "qs";
 import dotenv from "dotenv";
+import { Organization } from './../models/organizationModel.js';
 dotenv.config();
 
 export default class MoodleService {
   constructor() {
-    this.token = process.env.MOODLE_TOKEN;
-    this.url = process.env.MOODLE_URL;
-    if (!this.token || !this.url) {
-      throw new Error("Moodle API token or URL is not defined in .env.");
-    }
     this.options = {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -17,9 +13,39 @@ export default class MoodleService {
     };
   }
 
+  async loadOrganizationDetails() {
+    try {
+      const organization = await Organization.findOne({
+        attributes: ['token', 'origin', 'rest_path'],
+        where: { abbreviation: "FI" }
+      });
+
+      if (organization) {
+        return {
+          token: organization.token,
+          url: organization.origin + organization.rest_path
+        };
+      } else {
+        console.log("Organization details not found. MoodleService cannot make API calls.");
+        throw new Error("Organization data is missing.");
+      }
+    } catch (error) {
+      console.error("Failed to load organization details:", error);
+      throw error;
+    }
+  }
+
   async callMoodleAPI(params) {
     try {
-      const response = await axios.post(this.url, qs.stringify(params, { arrayFormat: "indices" }), this.options);
+      const { token, url } = await this.loadOrganizationDetails();
+
+      if (!token || !url) {
+        throw new Error("Moodle API token or URL is not defined.");
+      }
+
+      params.wstoken = token;
+
+      const response = await axios.post(url, qs.stringify(params, { arrayFormat: "indices" }), this.options);
       return response.data;
     } catch (error) {
       console.error("Error in Moodle API request:", error.message);
@@ -29,7 +55,7 @@ export default class MoodleService {
 
   async core_user_create_users(users) {
     const params = {
-      wstoken: this.token,
+      
       wsfunction: "core_user_create_users",
       moodlewsrestformat: "json",
       users: users,
@@ -39,7 +65,7 @@ export default class MoodleService {
 
   async core_user_update_users(users) {
     const params = {
-      wstoken: this.token,
+      
       wsfunction: "core_user_update_users",
       moodlewsrestformat: "json",
       users: users,
@@ -49,7 +75,7 @@ export default class MoodleService {
 
   async core_user_get_users(user) {
     const params = {
-      wstoken: this.token,
+      
       wsfunction: "core_user_get_users_by_field",
       moodlewsrestformat: "json",
       field : "username",
@@ -61,7 +87,7 @@ export default class MoodleService {
 
   async enrol_manual_enrol_users(enrolments) {
     const params = {
-      wstoken: this.token,
+      
       wsfunction: "enrol_manual_enrol_users",
       moodlewsrestformat: "json",
       enrolments: enrolments,
@@ -71,7 +97,7 @@ export default class MoodleService {
 
   async enrol_manual_unenrol_users(enrolments) {
     const params = {
-      wstoken: this.token,
+      
       wsfunction: "enrol_manual_unenrol_users",
       moodlewsrestformat: "json",
       enrolments: enrolments,
@@ -81,7 +107,7 @@ export default class MoodleService {
 
   async suspendUser(userId) {
     const params = {
-      wstoken: this.token,
+      
       wsfunction: "core_user_update_users",
       moodlewsrestformat: "json",
       users: [{
@@ -94,7 +120,7 @@ export default class MoodleService {
 
   async activateUser(userId) {
     const params = {
-      wstoken: this.token,
+      
       wsfunction: "core_user_update_users",
       moodlewsrestformat: "json",
       users: [{
@@ -107,7 +133,7 @@ export default class MoodleService {
 
   async core_course_get_courses_by_field(shortname) {
     const params = {
-      wstoken: this.token,
+      
       wsfunction: "core_course_get_courses_by_field",
       moodlewsrestformat: "json",
       field: "shortname",
@@ -118,7 +144,7 @@ export default class MoodleService {
 
   async local_wsgetroles_get_roles() {
     const params = {
-      wstoken: this.token,
+      
       wsfunction: "local_wsgetroles_get_roles",
       moodlewsrestformat: "json",
     };
@@ -127,7 +153,7 @@ export default class MoodleService {
 
   async core_group_add_group_members(members) {
     const params = {
-      wstoken: this.token,
+      
       wsfunction: "core_group_add_group_members",
       moodlewsrestformat: "json",
       members: members,
@@ -137,7 +163,7 @@ export default class MoodleService {
 
   async core_group_delete_group_members(members) {
     const params = {
-      wstoken: this.token, 
+       
       wsfunction: "core_group_delete_group_members",
       moodlewsrestformat: "json",
       members:members
@@ -147,7 +173,7 @@ export default class MoodleService {
 
   async core_group_create_groups(members) {
     const params = {
-      wstoken: this.token,
+      
       wsfunction: "core_group_create_groups",
       moodlewsrestformat: "json",
       members: members,
@@ -157,7 +183,7 @@ export default class MoodleService {
 
   async core_group_get_course_groups(courseId) {
     const params = {
-      wstoken: this.token,
+      
       wsfunction: "core_group_get_course_groups",
       moodlewsrestformat: "json",
       courseid: courseId,
@@ -167,7 +193,7 @@ export default class MoodleService {
 
   async core_enrol_get_users_courses(userId) {
     const params = {
-      wstoken: this.token,
+      
       wsfunction: "core_enrol_get_users_courses",
       moodlewsrestformat: "json",
       userid: userId,
@@ -177,7 +203,7 @@ export default class MoodleService {
 
   async core_group_get_course_user_groups(courseId, userId) {
     const params = {
-      wstoken: this.token,
+      
       wsfunction: "core_group_get_course_user_groups",
       moodlewsrestformat: "json",
       courseid: courseId,
