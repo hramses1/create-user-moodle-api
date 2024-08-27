@@ -1,13 +1,14 @@
-import MoodleService from "../utils/MoodleIntegrationService.js";
+import MoodleService from "../utils/moodleIntegrationService.js";
 import getUser from "./getUserMoodleService.js";
 import removeGroup from "./removeGroupMoodleService.js";
-import { User } from "../models/UserModel.js";
+import { User } from "../models/userModel.js";
 
 const moodleService = new MoodleService();
 
 export default async function unenrolUser(req) {
   try {
-    const username = req.username; 
+    const username = req.username;
+    console.log(username); 
     if (!username) {
       console.error("No username provided");
       return { status: "Error", message: "No username provided" };

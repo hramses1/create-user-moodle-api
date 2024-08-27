@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/sequelize-config.js";
 // Suponiendo que tengas modelos de Course y Role
-import { User } from './UserModel.js';
+import { User } from './userModel.js';
 import { Course } from './courseModel.js';
 import { Role } from './roleModel.js';
 

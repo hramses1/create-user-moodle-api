@@ -1,13 +1,12 @@
-import MoodleService from "../utils/MoodleIntegrationService.js";
+import MoodleService from "../utils/moodleIntegrationService.js";
 import UserRegistration from "../dtos/createUser.dto.js";
-import { User } from "../models/UserModel.js";
+import { User } from "../models/userModel.js";
 import { Enrollment } from "../models/enrollmentModel.js";
 import { Role } from "../models/roleModel.js";
 import { Course } from "../models/courseModel.js";
 import generateSecurePassword from "../utils/generateSecurePassword.js";
 import { v4 as uuidv4 } from "uuid";
 import formattedFirstname from "../utils/capitalizeFirstLetter.js";
-import parseUserData from "./parserDataService.js";
 import UserRegistrationDB from "../dtos/userDB.dto.js";
 const moodleService = new MoodleService();
 

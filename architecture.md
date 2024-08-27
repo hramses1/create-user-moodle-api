@@ -1,25 +1,28 @@
 ```
-└── 📁create-user-moodle-api
+└── 📁account-creation-for-fi
     └── 📁public
         └── 📁css
             └── style.css
+        └── 📁images
         └── 📁js
             └── script.js
     └── 📁src
         └── 📁api
             └── 📁routes
                 └── createUsersRoutes.js
+                └── deactivateUserRoutes..js
                 └── enrolRoutes.js
                 └── getRolesRoutes.js
-                └── getUsersRoutes.js
                 └── rolesRoutes.js
             └── index.js
         └── 📁config
+            └── capitalizeFirstLetter.js
             └── config.json
+            └── generateSecurePassword.js
             └── sequelize-config.js
         └── 📁controllers
-            └── coursesController.js
             └── enrolController.js
+            └── unenrolController.js
             └── usersController.js
         └── 📁dtos
             └── createUser.dto.js
@@ -28,31 +31,28 @@
             └── getUser.dto.js
             └── group.dto.js
             └── updateUser.dto.js
+            └── userDB.dto.js
         └── 📁models
             └── courseModel.js
             └── enrollmentModel.js
             └── initDatabase.js
             └── organizationModel.js
             └── roleModel.js
-            └── UserModel.js
+            └── userModel.js
         └── 📁services
             └── addGroupService.js
-            └── AutenMoodleService.js
             └── createUserMoodleService.js
             └── enrolUserMoodleService.js
             └── getEnrolMoodleService.js
             └── getGroupMoodleService.js
             └── getRolesMoodleService.js
             └── getUserMoodleService.js
-            └── moodleService.js
             └── parserDataService.js
             └── removeGroupMoodleService.js
             └── unenrolUserMoodleService.js
             └── updateUserMoodleService.js
         └── 📁utils
-            └── capitalizeFirstLetter.js
-            └── generateSecurePassword.js
-            └── MoodleIntegrationService.js
+            └── moodleIntegrationService.js
         └── app.js
     └── 📁tests
         └── coursesController.test.js
@@ -65,7 +65,9 @@
     └── .env
     └── .env.example
     └── .gitignore
+    └── architecture.md
     └── asyncapi.yaml
+    └── create_project_structure.sh
     └── package-lock.json
     └── package.json
     └── README.md

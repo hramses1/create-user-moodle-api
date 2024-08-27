@@ -1,4 +1,4 @@
-import MoodleService from "../utils/MoodleIntegrationService.js";
+import MoodleService from "../utils/moodleIntegrationService.js";
 import { User } from "../models/UserModel.js";
 import UserUpdate from "../dtos/updateUser.dto.js";
 import getUser from "./getUserMoodleService.js";

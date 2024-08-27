@@ -1,4 +1,4 @@
-import MoodleService from "../utils/MoodleIntegrationService.js";
+import MoodleService from "../utils/moodleIntegrationService.js";
 import UserEnRol from "../dtos/enrolUser.dto.js";
 
 import getEnrols from "./getEnrolMoodleService.js";

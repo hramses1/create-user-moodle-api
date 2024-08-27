@@ -1,7 +1,6 @@
-import { DataTypes } from 'sequelize';
 import sequelize from '../config/sequelize-config.js';
 import { Organization } from './organizationModel.js'; // Asegúrate de que el import es correcto
-import { User } from './UserModel.js';
+import { User } from './userModel.js';
 import { Role } from './roleModel.js';
 import { Enrollment } from './enrollmentModel.js';
 import { Course } from './courseModel.js';

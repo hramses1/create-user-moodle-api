@@ -4,7 +4,7 @@ import enrolPort from './api/routes/enrolRoutes.js';
 import getRolesPort from './api/routes/getRolesRoutes.js';
 import helmet from 'helmet';
 import compression from 'compression';
-import desactivateUserPort from './api/routes/desactivateUserRoutes.js';
+import desactivateUserPort from './api/routes/deactivateUserRoutes.js';
 
 import {initDatabase} from './models/initDatabase.js';  
 

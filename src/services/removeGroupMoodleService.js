@@ -1,4 +1,4 @@
-import MoodleService from "../utils/MoodleIntegrationService.js";
+import MoodleService from "../utils/moodleIntegrationService.js";
 import Group from "../dtos/group.dto.js";
 const moodleService = new MoodleService();
 
